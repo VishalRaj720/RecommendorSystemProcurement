@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "BIS Standard Assistant",
+  "version": "0.1.0",
+  "description": "SIH 26108 — recommend Indian Standards and insert compliance clauses into tender specifications.",
+  "permissions": ["storage", "sidePanel"],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*",
+    "*://*.gem.gov.in/*",
+    "*://*.eprocure.gov.in/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "BIS Assistant settings"
+  },
+  "side_panel": {
+    "default_path": "sidebar/sidebar.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "*://*.gem.gov.in/*",
+        "*://*.eprocure.gov.in/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

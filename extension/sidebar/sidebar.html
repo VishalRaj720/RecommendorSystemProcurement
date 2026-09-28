@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BIS Assistant</title>
+    <link rel="stylesheet" href="sidebar.css" />
+  </head>
+  <body>
+    <header>
+      <h1>BIS Assistant</h1>
+      <p>Statutory compliance suggestions for the focused tender field.</p>
+    </header>
+    <div class="panel">
+      <label for="language">Input language</label>
+      <select id="language">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        <option value="ta">Tamil</option>
+        <option value="te">Telugu</option>
+        <option value="mr">Marathi</option>
+        <option value="bn">Bengali</option>
+      </select>
+
+      <label for="description" style="margin-top: 10px">Specification excerpt</label>
+      <textarea
+        id="description"
+        placeholder="Paste or type the product description from the tender form."
+      ></textarea>
+
+      <div class="row">
+        <button type="button" id="audit">Run audit</button>
+        <button type="button" id="sync" class="secondary" title="Copy from focused field">From field</button>
+      </div>
+
+      <p class="hint" id="api-status">Checking API…</p>
+      <p class="hint" id="focus-hint">Focus the portal specification textarea before inserting.</p>
+      <p class="disclaimer">
+        Dataset status is not a gazette. Confirm before publishing the tender.
+      </p>
+      <div id="error" class="error" hidden></div>
+      <div id="results"></div>
+    </div>
+    <script src="sidebar.js"></script>
+  </body>
+</html>

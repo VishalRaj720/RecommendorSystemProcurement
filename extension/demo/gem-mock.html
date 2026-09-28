@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock GeM — Technical specification</title>
+    <style>
+      :root {
+        --paper: #faf9f5;
+        --ink: #1c1d1f;
+        --bureau: #0a192f;
+        --rule: #d6d3d1;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+      }
+      header {
+        border-bottom: 1px solid var(--rule);
+        padding: 16px 24px;
+        background: #fff;
+      }
+      header h1 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 22px;
+        color: var(--bureau);
+      }
+      header p {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: #5c5850;
+      }
+      main {
+        max-width: 720px;
+        margin: 24px auto;
+        padding: 0 16px 48px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 200px;
+        border: 1px solid var(--rule);
+        padding: 12px;
+        font-family: Georgia, serif;
+        font-size: 15px;
+        line-height: 1.5;
+        resize: vertical;
+      }
+      .actions {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      button {
+        border: 1px solid var(--bureau);
+        background: var(--paper);
+        color: var(--bureau);
+        padding: 8px 12px;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--bureau);
+        color: var(--paper);
+      }
+      .note {
+        margin-top: 16px;
+        font-size: 12px;
+        color: #5c5850;
+        border-left: 3px solid #c59b27;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Government e-Marketplace (mock)</h1>
+      <p>Phase 4 acceptance page — load over http://127.0.0.1 (not file://) so the extension can run.</p>
+    </header>
+    <main>
+      <form>
+        <label for="spec">Technical specification</label>
+        <textarea
+          id="spec"
+          name="spec"
+          data-bis-spec
+          placeholder="Enter product description for this bid…"
+        ></textarea>
+        <div class="actions">
+          <button type="button" class="primary" id="fire-demo">Demo: Fire doors (English)</button>
+          <button type="button" id="hindi-demo">Demo: Hindi cement phrase</button>
+        </div>
+      </form>
+      <p class="note">
+        Load this file with a local server (use a port other than the Docker dashboard on 8080), for example:
+        <code>npx --yes serve extension/demo -p 8090</code>
+        then open
+        <code>http://127.0.0.1:8090/gem-mock.html</code>.
+        Click <strong>BIS Assistant</strong>, run an audit, focus the textarea, and insert a clause.
+      </p>
+    </main>
+    <script>
+      document.getElementById("fire-demo").addEventListener("click", () => {
+        document.getElementById("spec").value =
+          "Supply and installation of fireproof barrier for hospital doors and fire-rated doorsets in a tertiary care building.";
+        document.getElementById("spec").focus();
+      });
+      document.getElementById("hindi-demo").addEventListener("click", () => {
+        document.getElementById("spec").value = "सीमेंट कंक्रीट सड़क निर्माण";
+        document.getElementById("spec").focus();
+      });
+    </script>
+  </body>
+</html>

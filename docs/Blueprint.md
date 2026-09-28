@@ -16,8 +16,8 @@ Workspace root **is** the monorepo (`backend/`, `frontend/`, `extension/`, `docs
 | 1 | Database, models, seed | Done |
 | 2 | FastAPI recommend pipeline | Done |
 | 3 | React dashboard | Done |
-| 4 | Chrome extension + local GeM mock | Not started |
-| 5 | Docker demo packaging | Not started |
+| 4 | Chrome extension + local GeM mock | Done |
+| 5 | Docker demo packaging | Done |
 
 ---
 
@@ -420,6 +420,8 @@ README.md
 
 **Out of scope:** a guaranteed selector for production GeM. Government hosts stay in the manifest so a manual trial is possible; they are not the acceptance test.
 
+**Outcome:** Unpacked load from `extension/`. Popup sets API base URL (`http://127.0.0.1:8000` default). Mock page: serve `extension/demo` on a port other than the Docker dashboard (8080), e.g. `npx --yes serve extension/demo -p 8090` → `http://127.0.0.1:8090/gem-mock.html`. Side panel audits and inserts clauses into the focused field.
+
 ---
 
 ## Phase 5 — Demo packaging
@@ -437,6 +439,8 @@ README.md
 - Fresh compose, no API keys, all three tenders succeed through the dashboard.
 - Second `docker compose up` does not duplicate standards.
 - `/health` reports `db=ok` and the MiniLM model name.
+
+**Outcome:** `docker compose up --build` starts `db`, `api` (seed on start + uvicorn), and `web` on http://localhost:8080. API on :8000. See root `README.md`.
 
 ---
 
