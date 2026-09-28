@@ -1,0 +1,19 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: bis
+      POSTGRES_PASSWORD: bis
+      POSTGRES_DB: bis_recommend
+    ports:
+      - "5433:5432"
+    volumes:
+      - bis_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bis -d bis_recommend"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  bis_pgdata:

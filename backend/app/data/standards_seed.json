@@ -1,0 +1,449 @@
+{
+  "meta": {
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_dim": 384,
+    "row_cap": 100,
+    "sourcing_note": "Catalogue is a curated MVP, not the full BIS library. Scope lines are original paraphrases. Cited QCOs point at a public notice checked while seeding. The steel-door order is stored as unverified because the DPIIT PDF is a draft and no gazette S.O. number was confirmed. Live scraping of bis.gov.in is intentionally not part of seed."
+  },
+  "standards": [
+    {
+      "is_code": "IS 13252 (Part 1)",
+      "title": "Information technology equipment — Safety — General requirements",
+      "scope_summary": "Earlier safety standard for information technology equipment such as desktops, laptops, servers, and their power supplies. MeitY has named IS/IEC 62368-1:2023 as the successor under compulsory registration, with concurrent use of this edition only until 1 November 2028.",
+      "latest_revision_year": 2010,
+      "status": "REVISED",
+      "successor_is_code": "IS/IEC 62368-1:2023",
+      "category": "Electronics"
+    },
+    {
+      "is_code": "IS/IEC 62368-1:2023",
+      "title": "Audio/video, information and communication technology equipment — Part 1: Safety requirements",
+      "scope_summary": "Current safety standard for audio, video, information and communication technology equipment, including laptops, servers, monitors, and similar office IT hardware. It is the standard MeitY told CRS applicants to migrate to from IS 13252 (Part 1) and IS 616.",
+      "latest_revision_year": 2023,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electronics"
+    },
+    {
+      "is_code": "IS 616",
+      "title": "Audio, video and similar electronic apparatus — Safety requirements",
+      "scope_summary": "Safety standard for audio and video electronic apparatus such as television sets and similar consumer electronics. The same MeitY CRS amendment that covers IT equipment names IS/IEC 62368-1:2023 as its successor, with concurrent running until 1 November 2028.",
+      "latest_revision_year": 2017,
+      "status": "REVISED",
+      "successor_is_code": "IS/IEC 62368-1:2023",
+      "category": "Electronics"
+    },
+    {
+      "is_code": "IS 3614",
+      "title": "Fire doors and doorsets — Specification",
+      "scope_summary": "Buyer specification for fire doors and doorsets used as a fireproof barrier in hospital and other building doorways. It describes the door product to be procured and rated; the furnace test that proves endurance is a separate standard.",
+      "latest_revision_year": 2021,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Safety"
+    },
+    {
+      "is_code": "IS 17518 (Part 1)",
+      "title": "Fire resistance tests for door and shutter assemblies — Part 1: General requirements",
+      "scope_summary": "Laboratory method that places a sample assembly in a furnace and records integrity and insulation. It is the test procedure used to rate a fire door, not the product specification a tender uses to buy the door.",
+      "latest_revision_year": 2022,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Safety"
+    },
+    {
+      "is_code": "IS 456",
+      "title": "Plain and reinforced concrete — Code of practice",
+      "scope_summary": "Code of practice for the design and construction of plain and reinforced cement concrete, including structural members in buildings and concrete used in road and pavement works. It is a design code of practice and this dataset attaches no product Quality Control Order to it.",
+      "latest_revision_year": 2000,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 516 (Part 1/Sec 1)",
+      "title": "Hardened concrete — Methods of test — Part 1, Section 1: Compressive, flexural and split tensile strength",
+      "scope_summary": "Test method for compressive, flexural, and split tensile strength of hardened concrete specimens. It is the strength-test companion used with the concrete code of practice when a tender asks how cube or beam strength is measured.",
+      "latest_revision_year": 2021,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 516:1959",
+      "title": "Method of tests for strength of concrete",
+      "scope_summary": "Earlier single-document method for strength tests on concrete. BIS has also published hardened-concrete strength tests as IS 516 (Part 1/Sec 1):2021. This seed does not mark the 1959 edition withdrawn, because the public sale listing still showed it as reaffirmed.",
+      "latest_revision_year": 1959,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 14772",
+      "title": "Boxes and enclosures for electrical accessories for household and similar fixed electrical installations",
+      "scope_summary": "Specification for boxes and enclosures that house switches, sockets, and similar accessories in household and comparable fixed wiring. The 2020 edition is the one named in the electrical accessories quality control order.",
+      "latest_revision_year": 2020,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 14772:2000",
+      "title": "Boxes and enclosures for electrical accessories (earlier edition)",
+      "scope_summary": "Earlier edition of the standard for electrical accessory boxes and enclosures. A tender that still cites the 2000 edition should move to the 2020 edition, which is the edition named for compulsory marking.",
+      "latest_revision_year": 2000,
+      "status": "REVISED",
+      "successor_is_code": "IS 14772",
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 14927 (Part 2)",
+      "title": "Cable trunking and ducting systems for electrical installations — Part 2: Systems for mounting on walls or ceilings",
+      "scope_summary": "Specification for cable trunking and ducting systems intended to be mounted on walls or ceilings in electrical installations. Listed with other electrical accessories in the same DPIIT quality control order.",
+      "latest_revision_year": 2001,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 1258",
+      "title": "Bayonet lamp holders",
+      "scope_summary": "Specification for bayonet lamp holders used in fixed electrical installations and light fittings. Covered as an electrical accessory under the DPIIT quality control order for compulsory standard mark.",
+      "latest_revision_year": 2005,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 15787",
+      "title": "Switch-socket-outlets (non-interlock type)",
+      "scope_summary": "Specification for non-interlock switch-socket-outlets used in household and similar fixed wiring. Named among electrical accessories that require the BIS standard mark under the 2023 quality control order.",
+      "latest_revision_year": 2008,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 13774",
+      "title": "Live working — Gloves of insulating material",
+      "scope_summary": "Specification for insulating gloves used while working on or near live electrical parts. Included in the electrical accessories quality control order as personal protective equipment for electrical work.",
+      "latest_revision_year": 2021,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 15652",
+      "title": "Insulating mats for electrical purposes",
+      "scope_summary": "Specification for insulating mats placed in front of electrical switchgear and similar equipment. Listed in the electrical accessories quality control order for compulsory use of the standard mark.",
+      "latest_revision_year": 2006,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 1382",
+      "title": "Glossary of terms relating to glass and glassware",
+      "scope_summary": "Glossary of terms used in the glass and glassware industry. It defines vocabulary for glass products and is not a fire-door, concrete, or electrical-accessory standard.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Other"
+    },
+    {
+      "is_code": "IS 14489",
+      "title": "Code of practice on occupational safety and health audit",
+      "scope_summary": "Code of practice for planning and carrying out an occupational safety and health audit of a workplace. It is an audit practice code, not a product specification, and this dataset attaches no product quality control order to it.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Safety"
+    },
+    {
+      "is_code": "IS 269",
+      "title": "Ordinary Portland cement — Specification",
+      "scope_summary": "Product specification for ordinary Portland cement used in concrete and mortar. Stored here as a material standard that concrete work often names; no quality control order is attached because a gazette row was not verified for this seed.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 383",
+      "title": "Coarse and fine aggregate for concrete — Specification",
+      "scope_summary": "Specification for coarse and fine aggregates from natural sources used to make concrete. Relevant when a civil tender specifies the stone and sand that go into a concrete mix.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1786",
+      "title": "High strength deformed steel bars and wires for concrete reinforcement",
+      "scope_summary": "Specification for high-strength deformed steel bars and wires used as reinforcement in concrete. Relevant to reinforced concrete tenders that ask for TMT or similar reinforcing bars.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 800",
+      "title": "General construction in steel — Code of practice",
+      "scope_summary": "Code of practice for design and construction of general steel structures. It guides structural steelwork and is not a product mark for doors, cement, or electrical accessories.",
+      "latest_revision_year": 2007,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1343",
+      "title": "Prestressed concrete — Code of practice",
+      "scope_summary": "Code of practice for prestressed concrete design and construction. Use it for prestressed members rather than for ordinary reinforced concrete covered by the plain and reinforced concrete code.",
+      "latest_revision_year": 2012,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 10262",
+      "title": "Concrete mix proportioning — Guidelines",
+      "scope_summary": "Guidelines for proportioning concrete mixes to a target strength and workability. It supports mix design and does not replace the structural code of practice for reinforced concrete.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1199",
+      "title": "Fresh concrete — Methods of sampling and analysis",
+      "scope_summary": "Methods for sampling and testing fresh concrete, including workability checks before the concrete hardens. It sits beside strength tests on hardened specimens.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1038",
+      "title": "Steel doors, windows and ventilators — Specification",
+      "scope_summary": "Specification for ordinary steel doors, windows, and ventilators used in buildings. These are general metal joinery items, not fire-rated doorsets.",
+      "latest_revision_year": 1983,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1361",
+      "title": "Steel windows for industrial buildings — Specification",
+      "scope_summary": "Specification for steel windows intended for industrial buildings. It covers industrial glazing frames and is not a fire-door test or a fire-door product standard.",
+      "latest_revision_year": 1978,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 2062",
+      "title": "Hot rolled medium and high tensile structural steel — Specification",
+      "scope_summary": "Specification for hot-rolled structural steel plates, sections, and flats used in building frames. It is a steel material standard for structural work.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Mechanical"
+    },
+    {
+      "is_code": "IS 1893 (Part 1)",
+      "title": "Criteria for earthquake resistant design of structures — Part 1: General provisions and buildings",
+      "scope_summary": "Criteria for earthquake-resistant design of buildings and general structures. Use it when a civil tender requires seismic design, not when it is buying a fire door or a laptop.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Civil"
+    },
+    {
+      "is_code": "IS 1641",
+      "title": "Code of practice for fire safety of buildings — General principles and fire grading",
+      "scope_summary": "Code of practice for fire-safety planning of buildings, including fire grading and general compartmentation principles. It is a building-practice code, not the product specification for a fire door assembly.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Safety"
+    },
+    {
+      "is_code": "IS 2190",
+      "title": "Selection, installation and maintenance of first-aid fire extinguishers — Code of practice",
+      "scope_summary": "Code of practice for choosing, installing, and maintaining first-aid fire extinguishers in buildings. It addresses portable extinguishers rather than fire-rated doors.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Safety"
+    },
+    {
+      "is_code": "IS 12640 (Part 1)",
+      "title": "Residual current operated circuit-breakers without integral overcurrent protection",
+      "scope_summary": "Specification for residual current circuit-breakers (RCCBs) for household and similar uses, without built-in overcurrent protection. Relevant to electrical safety of a building installation, not to accessory boxes.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 302 (Part 1)",
+      "title": "Safety of household and similar electrical appliances — Part 1: General requirements",
+      "scope_summary": "General safety requirements for household and similar electrical appliances. It is the common appliance-safety part and is not the CRS safety standard for laptops and IT equipment.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 732",
+      "title": "Code of practice for electrical wiring installations",
+      "scope_summary": "Code of practice for designing and installing electrical wiring in buildings. Use it for how a wiring system is laid out, not for the product standard of a single accessory.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 3043",
+      "title": "Code of practice for earthing",
+      "scope_summary": "Code of practice for earthing of electrical installations and equipment. It addresses earth electrodes, conductors, and system earthing rather than a particular appliance.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    },
+    {
+      "is_code": "IS 694",
+      "title": "PVC insulated cables for working voltages up to and including 1100 V",
+      "scope_summary": "Specification for PVC insulated cables and cords for voltages up to 1100 volts. Relevant when a tender buys building wiring cable. No quality control order is attached in this seed.",
+      "latest_revision_year": null,
+      "status": "ACTIVE",
+      "successor_is_code": null,
+      "category": "Electrical"
+    }
+  ],
+  "normative_references": [
+    {
+      "parent_is_code": "IS 3614",
+      "child_is_code": "IS 17518 (Part 1)",
+      "relationship_type": "TEST_METHOD"
+    },
+    {
+      "parent_is_code": "IS 456",
+      "child_is_code": "IS 516 (Part 1/Sec 1)",
+      "relationship_type": "TEST_METHOD"
+    }
+  ],
+  "quality_control_orders": [
+    {
+      "is_code": "IS 13252 (Part 1)",
+      "qco_title": "Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "issuing_ministry": "Ministry of Electronics and Information Technology",
+      "notification_date": "2025-10-29",
+      "notification_ref": "S.O. 4997(E) dated 29 October 2025, amending the Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "is_mandatory": true,
+      "certification_scheme": "CRS",
+      "evidence_level": "cited",
+      "source_url": "https://www.crsbis.in/BIS/app_srv/tdc/gl/docs/Guidelines_for_Implementation_of_Migration_to_62368_1_2023.pdf"
+    },
+    {
+      "is_code": "IS/IEC 62368-1:2023",
+      "qco_title": "Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "issuing_ministry": "Ministry of Electronics and Information Technology",
+      "notification_date": "2025-10-29",
+      "notification_ref": "S.O. 4997(E) dated 29 October 2025, amending the Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "is_mandatory": true,
+      "certification_scheme": "CRS",
+      "evidence_level": "cited",
+      "source_url": "https://www.crsbis.in/BIS/app_srv/tdc/gl/docs/Guidelines_for_Implementation_of_Migration_to_62368_1_2023.pdf"
+    },
+    {
+      "is_code": "IS 616",
+      "qco_title": "Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "issuing_ministry": "Ministry of Electronics and Information Technology",
+      "notification_date": "2025-10-29",
+      "notification_ref": "S.O. 4997(E) dated 29 October 2025, amending the Electronics and Information Technology Goods (Requirement of Compulsory Registration) Order, 2021",
+      "is_mandatory": true,
+      "certification_scheme": "CRS",
+      "evidence_level": "cited",
+      "source_url": "https://www.crsbis.in/BIS/app_srv/tdc/gl/docs/Guidelines_for_Implementation_of_Migration_to_62368_1_2023.pdf"
+    },
+    {
+      "is_code": "IS 3614",
+      "qco_title": "Draft Steel Doors, Windows, Ventilators and Fittings (Quality Control) Order, 2025",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": null,
+      "notification_ref": "DPIIT draft PDF only; gazette S.O. number for commencement was not confirmed",
+      "is_mandatory": false,
+      "certification_scheme": "ISI",
+      "evidence_level": "unverified",
+      "source_url": "https://www.dpiit.gov.in/static/uploads/2025/08/74afbdbc91663143ad2c5adfae1d8fa6.pdf"
+    },
+    {
+      "is_code": "IS 14772",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    },
+    {
+      "is_code": "IS 14927 (Part 2)",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    },
+    {
+      "is_code": "IS 1258",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    },
+    {
+      "is_code": "IS 15787",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    },
+    {
+      "is_code": "IS 13774",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    },
+    {
+      "is_code": "IS 15652",
+      "qco_title": "Electrical Accessories (Quality Control) Order, 2023",
+      "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+      "notification_date": "2024-01-01",
+      "notification_ref": "S.O. 43(E) dated 1 January 2024, as amended by S.O. 187(E) dated 13 January 2026",
+      "is_mandatory": true,
+      "certification_scheme": "ISI",
+      "evidence_level": "cited",
+      "source_url": "https://www.bis.gov.in/wp-content/uploads/2026/01/Electrical-Accessories-Quality-Control-Amendment-order-2026.pdf"
+    }
+  ]
+}
