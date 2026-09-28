@@ -14,8 +14,8 @@ Workspace root **is** the monorepo (`backend/`, `frontend/`, `extension/`, `docs
 | --- | --- | --- |
 | 0 | Blueprint, rules, skills | Done |
 | 1 | Database, models, seed | Done |
-| 2 | FastAPI recommend pipeline | Not started |
-| 3 | React dashboard | Not started |
+| 2 | FastAPI recommend pipeline | Done |
+| 3 | React dashboard | Done |
 | 4 | Chrome extension + local GeM mock | Not started |
 | 5 | Docker demo packaging | Not started |
 
@@ -370,6 +370,8 @@ README.md
 
 **Out of scope:** pixel-perfect UI, extension.
 
+**Outcome:** FastAPI on `http://127.0.0.1:8000`. Run `backend/.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000` from `backend/`. Optional LLM and Bhashini stay off unless env vars are set. Demo Hindi cement phrase lives in `backend/app/data/demo_phrases.json`.
+
 ---
 
 ## Phase 3 — React dashboard
@@ -394,6 +396,8 @@ README.md
 - Badge rules match the three QCO cases (cited, unverified, absent).
 
 **Out of scope:** voice, `.docx`, live GeM.
+
+**Outcome:** Vite app at `frontend/`. `npm run dev` serves `http://localhost:5173`. API base is `VITE_API_BASE_URL` (default `http://127.0.0.1:8000`). Statutory ledger UI; print export is a working summary, not a BIS publication.
 
 ---
 
