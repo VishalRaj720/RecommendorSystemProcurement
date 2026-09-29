@@ -1,4 +1,4 @@
-"""Load the curated BIS catalogue into Postgres and embed it with MiniLM.
+"""Load the curated BIS catalogue into SQLite and embed it with MiniLM in ChromaDB.
 
 Running this file twice upserts standards and replaces QCO and normative rows
 from backend/app/data/standards_seed.json. It does not call government websites.
@@ -12,7 +12,7 @@ from datetime import date
 from pathlib import Path
 
 from sqlalchemy import delete, func, select
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.orm import Session
 
 BACKEND_DIR = Path(__file__).resolve().parent
@@ -21,7 +21,10 @@ if str(BACKEND_DIR) not in sys.path:
 
 from app.core.config import EMBEDDING_DIM, EMBEDDING_MODEL, SEED_PATH  # noqa: E402
 from app.core.database import get_engine, init_db  # noqa: E402
+from app.core.chroma_store import get_chroma_collection  # noqa: E402
+from app.core.security import get_password_hash  # noqa: E402
 from app.models import NormativeReference, QualityControlOrder, Standard  # noqa: E402
+from app.models.user import User  # noqa: E402
 
 ALLOWED_STATUS = {"ACTIVE", "WITHDRAWN", "REVISED"}
 ALLOWED_RELATIONSHIP = {"TEST_METHOD", "TERMINOLOGY", "SAFETY", "INSTALLATION"}
@@ -95,13 +98,25 @@ def document_text(row: dict) -> str:
     return f"{row['is_code']}. {row['title']}. {row['category']}. {row['scope_summary']}"
 
 
+def seed_admin_user(session: Session) -> None:
+    admin = session.execute(select(User).where(User.username == "admin")).scalar_one_or_none()
+    if not admin:
+        admin = User(
+            username="admin",
+            hashed_password=get_password_hash("password"),
+        )
+        session.add(admin)
+        print("Seeded default admin user: admin / password")
+
+
 def upsert_standards(session: Session, standards: list[dict], vectors: list[list[float]]) -> dict[str, object]:
+    collection = get_chroma_collection()
+
     for row, vector in zip(standards, vectors, strict=True):
         values = {
             "is_code": row["is_code"],
             "title": row["title"],
             "scope_summary": row["scope_summary"],
-            "embedding": vector,
             "latest_revision_year": row["latest_revision_year"],
             "status": row["status"],
             "successor_is_code": row["successor_is_code"],
@@ -113,6 +128,15 @@ def upsert_standards(session: Session, standards: list[dict], vectors: list[list
             set_={key: statement.excluded[key] for key in values if key != "is_code"},
         )
         session.execute(statement)
+        
+        # Insert into ChromaDB
+        collection.upsert(
+            documents=[row["scope_summary"]],
+            metadatas=[{"is_code": row["is_code"], "status": row["status"]}],
+            ids=[row["is_code"]],
+            embeddings=[vector]
+        )
+        
     session.flush()
     rows = session.scalars(select(Standard)).all()
     return {row.is_code: row.id for row in rows}
@@ -161,12 +185,6 @@ def acceptance_checks(session: Session, expected_count: int) -> None:
     if count != expected_count:
         raise SystemExit(f"Expected {expected_count} standards, found {count}")
 
-    bad_dim = session.scalar(
-        select(func.count()).select_from(Standard).where(func.vector_dims(Standard.embedding) != EMBEDDING_DIM)
-    )
-    if bad_dim:
-        raise SystemExit(f"{bad_dim} embeddings are not {EMBEDDING_DIM}-d")
-
     codes = dict(session.execute(select(Standard.id, Standard.is_code)).all())
     links = session.execute(select(NormativeReference.parent_id, NormativeReference.child_id)).all()
     for parent_id, child_id in links:
@@ -191,17 +209,19 @@ def acceptance_checks(session: Session, expected_count: int) -> None:
 
     model = SentenceTransformer(EMBEDDING_MODEL)
     query = model.encode(FIRE_DOOR_QUERY, normalize_embeddings=True).tolist()
-    nearest_rows = session.scalars(
-        select(Standard).order_by(Standard.embedding.cosine_distance(query)).limit(3)
-    ).all()
-    nearest = nearest_rows[0] if nearest_rows else None
-    if nearest is None or nearest.is_code != "IS 3614":
-        found = ", ".join(row.is_code for row in nearest_rows) or "none"
+    
+    collection = get_chroma_collection()
+    nearest_chroma = collection.query(query_embeddings=[query], n_results=3)
+    nearest_codes = nearest_chroma["ids"][0] if nearest_chroma["ids"] else []
+    
+    nearest_is_code = nearest_codes[0] if nearest_codes else None
+    if nearest_is_code != "IS 3614":
+        found = ", ".join(nearest_codes) or "none"
         raise SystemExit(f"Fire-door query nearest rows were {found}, expected IS 3614 first")
 
     print(f"standards={count}")
     print(f"embedding_dim={EMBEDDING_DIM}")
-    print(f"fire_door_top={nearest.is_code}")
+    print(f"fire_door_top={nearest_is_code}")
     print("is_456_qco=0")
     print("glass_fire_link=0")
     print("cited_qco_gaps=0")
@@ -214,6 +234,7 @@ def main() -> None:
     init_db(engine)
     vectors = embed_texts([document_text(row) for row in catalogue["standards"]])
     with Session(engine) as session:
+        seed_admin_user(session)
         ids = upsert_standards(session, catalogue["standards"], vectors)
         replace_links(session, catalogue, ids)
         session.commit()

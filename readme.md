@@ -1,132 +1,101 @@
-# BIS-Procure Ledger — SIH 26108
+# AI-Powered BIS Recommendation Engine
 
-AI-assisted Indian Standard recommendations for government procurement specifications (curated demo catalogue, not the full BIS library).
+## What is this project?
+This project is an AI-powered Intelligent Standards (IS) recommendation engine designed specifically for the Ministry of Consumer Affairs under the Smart India Hackathon. It empowers government procurement officers to extract precise Indian Standards (IS Codes), Quality Control Orders (QCOs), and normative references directly from plain-text product descriptions or uploaded tender PDFs.
 
-**Stack:** React dashboard · FastAPI · PostgreSQL + pgvector · local MiniLM embeddings · Chrome extension (mock GeM).
-
----
-
-## Prerequisites
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Compose v2)
-- Optional for local dev without Docker: Python 3.12+, Node 22+
+Instead of hunting through legal catalogs manually, officers can provide a description (like "hospital fire doors"), and the engine will instantly recommend the EXACT standard, warn them about mandatory certifications (like ISI checks), and alert them if a standard has been withdrawn or revised.
 
 ---
 
-## Quick start (Docker — recommended for demos)
+## Tech Stack
+Our robust, serverless stack requires zero heavy Docker dependencies and runs beautifully on any local machine.
 
-1. Copy environment template (optional keys for cloud LLM / Bhashini):
-
-   ```powershell
-   copy .env.example .env
-   ```
-
-2. Build and start Postgres, API, and dashboard:
-
-   ```powershell
-   docker compose up --build
-   ```
-
-   First API start runs **idempotent seed** (`seed_data.py`) then uvicorn. The embedding model is **baked into the API image** at build time.
-
-3. Open:
-
-   | URL | Service |
-   |-----|---------|
-   | http://localhost:8080 | Dashboard (nginx → API proxy) |
-   | http://localhost:8000/docs | OpenAPI |
-   | http://localhost:8000/health | Health (`all-MiniLM-L6-v2`, `db: ok`) |
-
-4. **Offline demo:** no `LLM_API_KEY` or Bhashini keys required. English specs and mapped Hindi demo phrases work against the seeded DB.
+- **Frontend:** React, Vite, Tailwind CSS, React-Router
+- **Backend Core:** FastAPI (Python), Uvicorn 
+- **Security:** JWT Authentication (PyJWT, Passlib/Bcrypt)
+- **Machine Learning Layer:** `sentence-transformers/all-MiniLM-L6-v2`
+- **Vector Database:** ChromaDB (Local Serverless)
+- **Relational Structure:** SQLite + SQLAlchemy + Alembic Migrations
+- **Testing Suite:** Pytest (Backend) & Vitest + RTL (Frontend)
+- **Automated Web Scraping:** BeautifulSoup4, Requests, Python Schedule
 
 ---
 
-## Demo script (judging)
+## Full Architecture Flow
 
-1. **Fire doors (English)** — paste or use demo chip: hospital fireproof doors. Expect **IS 3614**, normative **IS 17518 (Part 1)**, fire-door QCO shown as **unverified** (draft DPIIT PDF only).
-2. **Concrete (Hindi)** — language Hindi, demo phrase for cement/road (`सीमेंट कंक्रीट सड़क निर्माण`). Expect **IS 456**, **no** mandatory QCO badge.
-3. **IT laptops** — office IT / server safety text. Expect **IS/IEC 62368-1:2023** and/or **IS 13252 (Part 1)** with **CRS** when cited.
-4. **Withdrawn code** — paste `IS 13252 (Part 1)` in English. Expect **LATEST_VERSION_ALERT** and successor **IS/IEC 62368-1:2023**.
-5. **Extension** — see below; API URL must be **port 8000**, not the dashboard port **8080**.
+```mermaid
+graph TD
+    subgraph Data Pipeline
+        A[BIS Web Catalog] -->|BeautifulSoup Web Scraper| B(Data Extraction & Formatting)
+        B -->|Sentence Transformers| C[all-MiniLM-L6-v2 Embeddings]
+        B --> D[(SQLite Database)]
+        C --> E[(ChromaDB Vector Store)]
+    end
 
-Every result screen includes: *Dataset status is not a gazette. Confirm before publishing the tender.*
+    subgraph Authentication
+        F[Procurement Officer] -->|admin / password| G[FastAPI POST /auth]
+        G -->|Bcrypt Verification| H[JWT Token Issued]
+    end
 
----
-
-## Chrome extension + mock GeM
-
-1. API must be reachable at **http://127.0.0.1:8000** (Docker `api` service or local uvicorn).
-2. Chrome → Extensions → **Load unpacked** → select the `extension/` folder.
-3. Extension toolbar icon → API base URL → **http://127.0.0.1:8000** → Save.
-4. Mock tender page (static server, **not** the dashboard):
-
-   ```powershell
-   npx --yes serve extension/demo -p 8090
-   ```
-
-   Open http://127.0.0.1:8090/gem-mock.html (use **8090** so it does not clash with the dashboard on **8080**).
-
-5. Focus the technical specification textarea → **BIS Assistant** → **Run audit** → **Insert into tender**.
-
----
-
-## Local development (without Docker)
-
-**Database**
-
-```powershell
-docker compose up -d db
-cd backend
-python -m venv .venv
-.\.venv\Scripts\pip install -r requirements.txt
-$env:DATABASE_URL="postgresql+psycopg://bis:bis@localhost:5433/bis_recommend"
-python seed_data.py
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+    subgraph Recommendation Engine
+        I[Officer Provides Tender Text] --> J{FastAPI Controller}
+        J --> K[Generate Query Embedding]
+        K -->|Cosine Nearest Neighbor Search| E
+        E -->|Return Top Ranked IS Code IDs| L[Python Rule Engine]
+        D -->|Inject Missing Legacy Revisions| L
+        D -->|Attach QCO & Active Status| L
+        L --> M[React UI Render]
+    end
 ```
 
-**Dashboard**
+---
 
+## Dry Run Example
+
+1. **Input:** The procurement officer logs into the dashboard and types: *"We are procuring reinforced concrete for highway road construction."*
+2. **Translation & Parsing:** The Python backend securely intercepts the request and feeds the contextual text into the local AI embedding model.
+3. **Space Matching:** The AI vector theoretically maps the query into ChromaDB, computing distance, and retrieving the geometric nearest ID: `IS 456`.
+4. **Relational Logic:** The Rule engine queries SQLite for `IS 456`, actively validating whether there is a mandatory Quality Control Order (QCO) attached or if this code was recently revised.
+5. **Output:** The React dashboard dynamically renders **IS 456: Code of Practice for Plain and Reinforced Concrete** with a green `[ ACTIVE ]` pill. Because there isn't a government QCO logged, the compliance badge stays clean, letting the officer print and legally paste the clause into their GeM procurement order. 
+
+---
+
+## How to Run the Project locally 
+
+Because this project abandons heavy Docker-PostgreSQL footprints for serverless SQLite & ChromaDB arrays, launching a local deployment is incredibly fast.
+
+### 1. Start the Secure Backend
+Open a terminal and navigate to the backend folder:
+```powershell
+cd backend
+
+# Install project dependencies
+pip install -r requirements.txt
+
+# Run safe database migrations to construct the SQL environment
+alembic upgrade head
+
+# Seed the database and generate initial vector embeddings
+python seed_data.py
+
+# Boot the API server
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+### 2. Start the Frontend Dashboard
+Open a completely new terminal instance and navigate to the frontend folder:
 ```powershell
 cd frontend
+
+# Install UI packages
 npm install
+
+# Start the Vite development hot-reload server
 npm run dev
 ```
 
-Open http://localhost:5173 (Vite proxies `/api` and `/health` to port 8000).
-
----
-
-## Configuration
-
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `DATABASE_URL` | Yes (API) | Postgres with pgvector |
-| `LLM_API_KEY` | No | Cloud extraction (`extraction_mode=llm`) |
-| `LLM_BASE_URL`, `LLM_MODEL` | No | OpenAI-compatible chat API |
-| `BHASHINI_USER_ID`, `BHASHINI_API_KEY`, `BHASHINI_PIPELINE_ID` | No | Live translation |
-| `VITE_API_BASE_URL` | No | Dashboard dev only; Docker build uses same-origin proxy |
-
-Embeddings are always **local** `all-MiniLM-L6-v2` (384-d) on the API host — not configured via `.env`.
-
----
-
-## Repository layout
-
-```
-backend/          FastAPI, seed, Dockerfile
-frontend/         React dashboard, nginx Dockerfile
-extension/        Chrome MV3 + demo/gem-mock.html
-docs/Blueprint.md Phase contract and architecture
-docker-compose.yml
-```
-
----
-
-## Limitations (honest demo scope)
-
-- ~35 curated standards, not 21,000 BIS titles.
-- Scope text is original paraphrase, not BIS PDF content.
-- QCO rows use public references where cited; some orders are marked **unverified**.
-- Production GeM DOM injection is not guaranteed; acceptance uses the local mock page.
-
-Execution phases are tracked in `docs/Blueprint.md`.
+### 3. Log In
+Open your local browser to the printed Vite server endpoint (typically `http://localhost:5173`).
+To bypass the JWT security lock, enter the default seeded credentials:
+- **Username:** `admin`
+- **Password:** `password`

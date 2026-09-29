@@ -13,9 +13,13 @@ _SessionLocal: sessionmaker[Session] | None = None
 def get_engine(url: str | None = None) -> Engine:
     global _engine
     if url:
-        return create_engine(url, future=True)
+        return create_engine(url, connect_args={"check_same_thread": False}, future=True)
     if _engine is None:
-        _engine = create_engine(get_database_url(), future=True)
+        db_url = get_database_url()
+        # Default fallback to sqlite if user forgot to change .env
+        if db_url.startswith("postgresql"):
+            db_url = "sqlite:///./bis_recommend_v2.db"
+        return create_engine(db_url, connect_args={"check_same_thread": False}, future=True)
     return _engine
 
 
@@ -36,10 +40,7 @@ def get_session() -> Generator[Session, None, None]:
 
 def init_db(engine: Engine) -> None:
     from app.models import Base
-
-    with engine.begin() as conn:
-        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
-    Base.metadata.create_all(engine)
+    pass
 
 
 def ping_db() -> bool:

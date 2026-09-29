@@ -3,7 +3,27 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AppShell from "./AppShell.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import StandardSearch from "./pages/StandardSearch.jsx";
+import Login from "./pages/Login.jsx";
 import { getHealth } from "./services/api.js";
+import { AuthProvider, useAuth } from "./AuthContext.jsx";
+
+function AppContent({ health }) {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
+  return (
+    <AppShell health={health}>
+      <Routes>
+        <Route path="/" element={<Dashboard health={health} />} />
+        <Route path="/search" element={<StandardSearch />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AppShell>
+  );
+}
 
 export default function App() {
   const [health, setHealth] = useState(null);
@@ -15,12 +35,8 @@ export default function App() {
   }, []);
 
   return (
-    <AppShell health={health}>
-      <Routes>
-        <Route path="/" element={<Dashboard health={health} />} />
-        <Route path="/search" element={<StandardSearch />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </AppShell>
+    <AuthProvider>
+      <AppContent health={health} />
+    </AuthProvider>
   );
 }

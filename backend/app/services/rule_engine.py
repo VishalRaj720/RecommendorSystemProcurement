@@ -130,21 +130,34 @@ def walk_normative(session: Session, root_id: uuid.UUID, max_hops: int = NORMATI
 
 
 def semantic_candidates(session: Session, embedding: list[float], limit: int = 8) -> list[tuple[Standard, float]]:
-    distance = Standard.embedding.cosine_distance(embedding)
+    from app.core.chroma_store import get_chroma_collection
+    
+    collection = get_chroma_collection()
+    results = collection.query(query_embeddings=[embedding], n_results=limit)
+    
+    if not results or not results["ids"] or not results["ids"][0]:
+        return []
+        
+    chroma_ids = results["ids"][0]
+    chroma_distances = results["distances"][0] if "distances" in results and results["distances"] else [0.0]*len(chroma_ids)
+    id_to_dist = dict(zip(chroma_ids, chroma_distances))
+    
     rows = session.execute(
-        select(Standard, distance.label("distance"))
+        select(Standard)
         .options(selectinload(Standard.qcos))
-        .order_by(distance.asc())
-        .limit(limit)
-    ).all()
+        .where(Standard.is_code.in_(chroma_ids))
+    ).scalars().all()
+    
+    matched = [(row, id_to_dist.get(row.is_code, 0.0)) for row in rows]
+    
     ranked = sorted(
-        rows,
+        matched,
         key=lambda item: (
             item[1] + (0.0 if item[0].status == "ACTIVE" else DISTANCE_ACTIVE_TIE),
             item[1],
         ),
     )
-    return [(row, float(dist)) for row, dist in ranked]
+    return ranked
 
 
 def to_match(session: Session, standard: Standard, distance: float | None) -> MatchOut:

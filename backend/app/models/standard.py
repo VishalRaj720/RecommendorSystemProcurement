@@ -1,12 +1,10 @@
 import uuid
 from datetime import datetime
 
-from pgvector.sqlalchemy import Vector
 from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.core.config import EMBEDDING_DIM
 from app.models.base import Base
 
 STATUSES = ("ACTIVE", "WITHDRAWN", "REVISED")
@@ -23,7 +21,6 @@ class Standard(Base):
     is_code: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
     title: Mapped[str] = mapped_column(String(400), nullable=False)
     scope_summary: Mapped[str] = mapped_column(Text, nullable=False)
-    embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIM), nullable=False)
     latest_revision_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     status: Mapped[str] = mapped_column(String(20), nullable=False)
     successor_is_code: Mapped[str | None] = mapped_column(String(80), nullable=True)
