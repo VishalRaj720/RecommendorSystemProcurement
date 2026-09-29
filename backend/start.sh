@@ -4,10 +4,10 @@ set -e
 
 echo "Starting BIS Recommendation Engine Backend..."
 
-# Optional: You can uncomment these lines if you want Render to automatically run 
-# database seeding upon every restart. Generally, running migrations is safer.
-# alembic upgrade head
-# python seed_data.py
+# Render persistent disks are only mounted during runtime (not build time).
+# Therefore, we MUST run database setup commands here.
+alembic upgrade head
+python seed_data.py
 
 # 1. Run the scraper daemon silently in the background
 echo "Launching weekly web scraper daemon in background..."
